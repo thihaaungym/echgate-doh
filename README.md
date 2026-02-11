@@ -56,7 +56,7 @@ Set these in **Cloudflare Pages → Settings → Variables & Secrets**
 |----|----|----|----|----|
 | `UI_USER` | Secret | ✅ | Console login username | `admin` |
 | `UI_PASS` | Secret | ✅ | Console login password | `strong-password-123` |
-| `ADMIN_KEY` | Secret | ❌ Optional | Admin JSON access key | `echgate-admin-key-change-me` |
+| `ADMIN_KEY` | Secret | ❌ Optional | Admin JSON access key | `aK9QF7m2Z4LxR3C8eVYH5D6sN1BOTUpJcWQEA` |
 
 > ℹ️ `ADMIN_KEY` ကို ထည့်ထားရင်  
 > `/health?admin=1` ကို **login မလုပ်ဘဲ**  
@@ -111,7 +111,4 @@ If KV is **not configured**, ECHGate will fall back to safe defaults.
 
 This project was originally created by **Thiha Aung (Yone Man)**.  
 If you fork or redistribute, please keep this attribution.
-## Attribution
 
-This project was originally created by **Thiha Aung (Yone Man)**.
-If you fork or redistribute, please keep this attribution.
