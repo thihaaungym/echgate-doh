@@ -100,3 +100,47 @@ ECHGate သည် runtime config တွေကို
 Cloudflare Dashboard → Workers & KV → KV → Create namespace
 
 ဥပမာ:
+
+### 2️⃣ Bind KV to Pages Project
+
+**Pages → Settings → Functions → KV bindings**
+
+| Binding name | Namespace |
+|-------------|-----------|
+| `KV` | `ECHGATE_KV` |
+
+⚠️ Binding name **must be exactly `KV`**
+
+### 3️⃣ KV Keys Used
+
+| Key | Type | Description |
+|----|----|----|
+| `allow_get` | `"1"` / `"0"` | Enable GET mode (Remote DNS compatibility) |
+| `last_mode` | string | Last selected DoH endpoint |
+| `ui_version` | string | UI schema version |
+
+> KV မရှိရင် ECHGate က **safe defaults** နဲ့ run ပါတယ်။
+
+---
+
+## 🧠 Design Philosophy
+
+- Deploy-your-own (no shared infra)
+- Per-user isolation (multi-tenant by deployment)
+- No tracking, no analytics, no phone-home
+- Censorship-resistant DNS use-cases အတွက် safe
+- Power users + normal users နှစ်မျိုးလုံး အဆင်ပြေ
+
+---
+
+## 📄 License
+
+MIT License  
+(see `LICENSE` file)
+
+---
+
+## Attribution
+
+Created by **Thiha Aung (Yone Man)**  
+If you fork or redistribute, please keep this attribution.
