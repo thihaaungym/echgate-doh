@@ -62,3 +62,7 @@ Set these in **Cloudflare Pages → Settings → Variables & Secrets**
 ## 🗄️ KV Binding (Optional but Recommended)
 
 Create a KV namespace and bind it as:
+## Attribution
+
+This project was originally created by **Thiha Aung (Yone Man)**.
+If you fork or redistribute, please keep this attribution.
