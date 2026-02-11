@@ -1,122 +1,116 @@
-# echgate-doh
+<p align="center">
+  <img src="assets/echgate-logo.png" alt="ECHGate Logo" width="120">
+</p>
 
-Secure DNS-over-HTTPS (DoH) gateway on **Cloudflare Pages**  
-with Web UI, GET toggle, Health JSON/HTML & DPI detection.
+<h1 align="center">ECHGate — DNS-over-HTTPS on Cloudflare Pages</h1>
+
+<p align="center">
+  Secure, deploy-your-own <b>DNS-over-HTTPS (DoH)</b> gateway with Web UI, Health API & DPI detection
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Cloudflare-Pages-orange?logo=cloudflare&logoColor=white">
+  <img src="https://img.shields.io/badge/DoH-DNS--over--HTTPS-blue">
+  <img src="https://img.shields.io/badge/Multi--Tenant-Friendly-success">
+</p>
 
 ---
 
-## 🌐 ECHGate — DNS-over-HTTPS on Cloudflare Pages
+## 🔐 What is ECHGate?
 
-**ECHGate** is a deploy-your-own **DNS-over-HTTPS (DoH)** gateway  
-designed for censorship-resistant, privacy-focused DNS usage.
+**ECHGate** သည်  
+Cloudflare Pages + Workers ပေါ်တွင် chạy နေတဲ့  
+**deploy-your-own DNS-over-HTTPS gateway** ဖြစ်ပြီး
 
-Each user deploys it on **their own Cloudflare account & domain**.  
-No shared backend. No tracking. No vendor lock-in.
+- Web UI ပါတယ်  
+- Health JSON / HTML ပါတယ်  
+- GET / POST toggle ပါတယ်  
+- DPI throttling / anomaly ကို heuristic နည်းလမ်းနဲ့ detect လုပ်ပေးတယ်  
+
+👉 **User တစ်ယောက်ချင်းစီက ကိုယ်ပိုင် Cloudflare account + domain နဲ့ deploy လုပ်သုံးနိုင်အောင် design လုပ်ထားတာ** ဖြစ်ပါတယ်။
 
 ---
 
 ## ✨ Features
 
-### 🚀 DoH Endpoints
-- `/dns-query` (AUTO fallback)
-- `/dns-query/cf` (Cloudflare)
-- `/dns-query/cf-sec` (Cloudflare Secure)
-- `/dns-query/gg` (Google)
+### 🌐 DoH Endpoints
+- `/dns-query` → AUTO fallback
+- `/dns-query/cf` → Cloudflare
+- `/dns-query/cf-sec` → Cloudflare (secure profile)
+- `/dns-query/gg` → Google
 
-### 🖥️ Web Console
-- Username / password login
+### 🖥️ Web UI
+- Username / Password login
 - Copy-ready DoH URLs
-- GET / POST toggle (Remote DNS compatible)
+- GET mode toggle (Remote DNS compatible)
 - Live counters, latency & upstream health
+- DPI indicator badge (OK / WARN)
 
 ### 🩺 Health API
-- `/health` → public JSON or browser HTML
-- `/health?admin=1` → full admin JSON  
-  (via login **or** admin key)
+- `/health`  
+  → Public JSON (API)  
+  → Human-readable HTML (browser)
 
-### 🔐 Security
-- CSP + `no-store` cache
+- `/health?admin=1`  
+  → Full admin JSON  
+  → Access via **login session** OR **admin key**
+
+### 🔒 Security
+- Strict CSP
+- `Cache-Control: no-store`
 - HttpOnly auth cookie
-- Optional admin header key
-- POST origin check
-- HEAD probe support
+- Optional `x-ech-admin-key` header
+- POST origin validation
 
 ### 🧠 Architecture
-- Multi-tenant friendly
-- Per-deployment isolation
+- No shared backend
 - No central logging
-- KV-backed runtime config (optional)
+- Each deployment isolated (multi-tenant by design)
+- Safe for censorship-resistant DNS setups
+
+---
+
+## 📸 Web Console Preview
+
+<p align="center">
+  <img src="assets/ui.png" alt="ECHGate Web UI" width="360">
+</p>
 
 ---
 
 ## 🚀 One-Click Deploy (Cloudflare Pages)
 
-Each user deploys **on their own Cloudflare account & domain**:
+> Each user deploys on **their own Cloudflare account & domain**
 
-👉 https://dash.cloudflare.com/?to=pages
+[![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://dash.cloudflare.com/?to=pages)
 
 ---
 
 ## ⚙️ Required Environment Variables
 
-Set in **Cloudflare Pages → Settings → Variables & Secrets**
+Configure in  
+**Cloudflare Pages → Settings → Variables & Secrets**
 
-| Name | Type | Required | Description |
-|----|----|----|----|
-| `UI_USER` | Secret | ✅ | Web console username |
-| `UI_PASS` | Secret | ✅ | Web console password |
-| `ADMIN_KEY` | Secret | ❌ Optional | Admin JSON access key |
+| Name | Type | Required | Description | Example |
+|----|----|----|----|----|
+| `UI_USER` | Secret | ✅ | Web console username | `admin` |
+| `UI_PASS` | Secret | ✅ | Web console password | `strong-password-123` |
+| `ADMIN_KEY` | Secret | ❌ Optional | Admin JSON access key | `echgate-admin-key-change-me` |
 
-> ℹ️ If `ADMIN_KEY` is set, `/health?admin=1` can be accessed  
-> **without login** using header: `x-ech-admin-key`.
+> ℹ️ `ADMIN_KEY` ထည့်ထားရင်  
+> `/health?admin=1` ကို  
+> **login မလုပ်ဘဲ**  
+> `x-ech-admin-key` header နဲ့ access လုပ်နိုင်ပါတယ်။
 
 ---
 
 ## 🗄️ KV Binding (Optional but Recommended)
 
-ECHGate uses **Cloudflare KV** to persist runtime state.
+ECHGate သည် runtime state ကို **Cloudflare KV** မှာသိမ်းပါတယ်။
 
-### KV Namespace
-Create a KV namespace (any name).
+### 1️⃣ Create KV Namespace
 
-### Bind to Pages
-**Pages → Settings → Functions → KV bindings**
+Cloudflare Dashboard →  
+**Workers & Pages → KV → Create namespace**
 
-| Binding name | Namespace |
-|-------------|-----------|
-| `KV` | Your KV namespace |
-
-⚠️ Binding name **must be exactly `KV`**
-
-### KV Keys Used
-
-| Key | Type | Purpose |
-|----|----|----|
-| `allow_get` | `"1"` / `"0"` | Enable GET mode |
-| `last_mode` | string | Last selected endpoint |
-| `ui_version` | string | UI schema version |
-
-If KV is **not configured**, safe defaults are used.
-
----
-
-## 🧠 Design Philosophy
-
-- Deploy-your-own, no SaaS
-- Each user owns their account & domain
-- No telemetry, no tracking
-- Safe for censorship-resistant DNS setups
-- Simple, auditable, hackable
-
----
-
-## 📜 License
-
-See `LICENSE` file.
-
----
-
-## 🙏 Attribution
-
-Created by **Thiha Aung (Yone Man)**  
-If you fork or redistribute, please keep this attribution.
+ဥပမာ
