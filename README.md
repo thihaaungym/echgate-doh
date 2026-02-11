@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./echgate-logo.png" alt="ECHGate Logo" width="280">
+  <img src="./echgate-logo.png" alt="ECHGate Logo" width="380">
 </p>
 
 <h1 align="center">ECHGate — DNS-over-HTTPS on Cloudflare Pages</h1>
@@ -83,7 +83,7 @@ Set these in
 |----|----|----|----|
 | `UI_USER` | Secret | ✅ | Web console login username |
 | `UI_PASS` | Secret | ✅ | Web console login password |
-| `ADMIN_KEY` | Secret | ❌ Optional | Admin JSON access key |
+| `ADMIN_KEY` | Secret | ❌ Optional | aK9QF7m2Z4LxR3C8eVYH5D6sN1BOTUpJcWQEA |
 
 > ℹ️ `ADMIN_KEY` ထည့်ထားရင်  
 > `/health?admin=1` ကို **login မလုပ်ဘဲ**  
