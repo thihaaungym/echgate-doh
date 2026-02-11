@@ -1,114 +1,122 @@
 # echgate-doh
-Secure DNS-over-HTTPS gateway with Cloudflare Pages — Web UI, GET toggle, Health JSON/HTML & DPI detection
 
-# ECHGate — DNS-over-HTTPS on Cloudflare Pages
+Secure DNS-over-HTTPS (DoH) gateway on **Cloudflare Pages**  
+with Web UI, GET toggle, Health JSON/HTML & DPI detection.
 
-Secure, deploy-your-own **DNS-over-HTTPS (DoH)** gateway running on **Cloudflare Pages** with:
+---
 
-- 🌐 Public DoH endpoints
-- 🔐 Login-protected Web Console
-- 🔁 GET / POST toggle (KV-backed)
-- 🩺 Health endpoint (JSON + HTML)
-- 🚨 DPI detection indicator (heuristic)
-- 🧠 Multi-tenant friendly (each user deploys on their own account & domain)
+## 🌐 ECHGate — DNS-over-HTTPS on Cloudflare Pages
+
+**ECHGate** is a deploy-your-own **DNS-over-HTTPS (DoH)** gateway  
+designed for censorship-resistant, privacy-focused DNS usage.
+
+Each user deploys it on **their own Cloudflare account & domain**.  
+No shared backend. No tracking. No vendor lock-in.
 
 ---
 
 ## ✨ Features
 
-### DoH Endpoints
+### 🚀 DoH Endpoints
 - `/dns-query` (AUTO fallback)
-- `/dns-query/cf`
-- `/dns-query/cf-sec`
-- `/dns-query/gg`
+- `/dns-query/cf` (Cloudflare)
+- `/dns-query/cf-sec` (Cloudflare Secure)
+- `/dns-query/gg` (Google)
 
-### Web UI
-- Login with username/password
+### 🖥️ Web Console
+- Username / password login
 - Copy-ready DoH URLs
-- GET mode toggle (Remote DNS compatible)
-- Live counters, latency, upstream health
+- GET / POST toggle (Remote DNS compatible)
+- Live counters, latency & upstream health
 
-### Health API
-- `/health` → public JSON / browser HTML
-- `/health?admin=1` → full admin JSON (login or admin key)
+### 🩺 Health API
+- `/health` → public JSON or browser HTML
+- `/health?admin=1` → full admin JSON  
+  (via login **or** admin key)
 
-### Security
-- CSP, no-store cache
+### 🔐 Security
+- CSP + `no-store` cache
 - HttpOnly auth cookie
 - Optional admin header key
 - POST origin check
+- HEAD probe support
+
+### 🧠 Architecture
+- Multi-tenant friendly
+- Per-deployment isolation
+- No central logging
+- KV-backed runtime config (optional)
 
 ---
 
 ## 🚀 One-Click Deploy (Cloudflare Pages)
 
-> Each user deploys **on their own Cloudflare account & domain**
+Each user deploys **on their own Cloudflare account & domain**:
 
-[![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://dash.cloudflare.com/?to=pages)
+👉 https://dash.cloudflare.com/?to=pages
 
 ---
 
 ## ⚙️ Required Environment Variables
 
-Set these in **Cloudflare Pages → Settings → Variables & Secrets**
+Set in **Cloudflare Pages → Settings → Variables & Secrets**
 
-| Name | Type | Required | Description | Example |
-|----|----|----|----|----|
-| `UI_USER` | Secret | ✅ | Console login username | `admin` |
-| `UI_PASS` | Secret | ✅ | Console login password | `strong-password-123` |
-| `ADMIN_KEY` | Secret | ❌ Optional | Admin JSON access key | `aK9QF7m2Z4LxR3C8eVYH5D6sN1BOTUpJcWQEA` |
+| Name | Type | Required | Description |
+|----|----|----|----|
+| `UI_USER` | Secret | ✅ | Web console username |
+| `UI_PASS` | Secret | ✅ | Web console password |
+| `ADMIN_KEY` | Secret | ❌ Optional | Admin JSON access key |
 
-> ℹ️ `ADMIN_KEY` ကို ထည့်ထားရင်  
-> `/health?admin=1` ကို **login မလုပ်ဘဲ**  
-> `x-ech-admin-key` header နဲ့ access လုပ်နိုင်ပါတယ်။
+> ℹ️ If `ADMIN_KEY` is set, `/health?admin=1` can be accessed  
+> **without login** using header: `x-ech-admin-key`.
 
 ---
 
 ## 🗄️ KV Binding (Optional but Recommended)
 
-ECHGate uses **Cloudflare KV** to persist runtime configuration.
+ECHGate uses **Cloudflare KV** to persist runtime state.
 
-### 1️⃣ Create KV Namespace
+### KV Namespace
+Create a KV namespace (any name).
 
-Cloudflare Dashboard →
----
-
-### 2️⃣ Bind KV to Pages Project
-
+### Bind to Pages
 **Pages → Settings → Functions → KV bindings**
 
 | Binding name | Namespace |
 |-------------|-----------|
-| `KV` | `ECHGATE_KV` |
+| `KV` | Your KV namespace |
 
 ⚠️ Binding name **must be exactly `KV`**
 
----
+### KV Keys Used
 
-### 3️⃣ KV Keys Used
-
-| Key | Type | Description |
+| Key | Type | Purpose |
 |----|----|----|
-| `allow_get` | boolean (`"1"` / `"0"`) | Enable GET mode (Remote DNS compatibility) |
-| `last_mode` | string | Last selected DoH endpoint |
+| `allow_get` | `"1"` / `"0"` | Enable GET mode |
+| `last_mode` | string | Last selected endpoint |
 | `ui_version` | string | UI schema version |
 
-If KV is **not configured**, ECHGate will fall back to safe defaults.
+If KV is **not configured**, safe defaults are used.
 
 ---
 
 ## 🧠 Design Philosophy
 
-- Deploy-your-own (no shared backend)
-- Each user owns their Cloudflare account & domain
-- No central logging or tracking
+- Deploy-your-own, no SaaS
+- Each user owns their account & domain
+- No telemetry, no tracking
 - Safe for censorship-resistant DNS setups
-- Multi-tenant by design (per deployment isolation)
+- Simple, auditable, hackable
 
 ---
 
-## Attribution
+## 📜 License
 
-This project was originally created by **Thiha Aung (Yone Man)**.  
+See `LICENSE` file.
+
+---
+
+## 🙏 Attribution
+
+Created by **Thiha Aung (Yone Man)**  
 If you fork or redistribute, please keep this attribution.
-
