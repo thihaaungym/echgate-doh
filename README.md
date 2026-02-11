@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./echgate-logo.png" alt="ECHGate Logo" width="120">
+  <img src="./echgate-logo.png" alt="ECHGate Logo" width="280">
 </p>
 
 <h1 align="center">ECHGate — DNS-over-HTTPS on Cloudflare Pages</h1>
@@ -22,12 +22,6 @@
 **ECHGate** သည်  
 Cloudflare Pages + Workers ပေါ်မှာ run လုပ်တဲ့  
 **deploy-your-own DNS-over-HTTPS (DoH) gateway** တစ်ခုဖြစ်ပါတယ်။
-
-✔️ ကိုယ့် Cloudflare account  
-✔️ ကိုယ့် domain  
-✔️ ကိုယ့် control  
-
-အပြည့်အဝ သုံးနိုင်အောင် design လုပ်ထားပါတယ်။
 
 ---
 
